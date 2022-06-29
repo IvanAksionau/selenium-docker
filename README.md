@@ -1,4 +1,4 @@
- # Selenium based test framework based on docker containers
+ # Selenium based test framework + execution in docker containers
 
 The list of some basic Linux commands using in this course.
 - Print the current working directory - pwd
