@@ -1,6 +1,6 @@
  # Selenium based test framework based on docker containers
 
-# This is the list of some basic Linux commands using in this course.
+The list of some basic Linux commands using in this course.
 - Print the current working directory - pwd
 - List all the files & folders -  ls -al
 - Create directory  -  mkdir dirname
