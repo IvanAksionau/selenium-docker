@@ -167,7 +167,7 @@ environment:
 # RUNNING TESTS VIA JAR
 - $ mvn clean package -DskipTests
 - $ cd target
-- $ java -cp "selenium-docker.jar;selenium-docker-tests.jar;libs/*" -DHUB_HOST="192.168.100.5" org.testng.TestNG ../search-module.xml - run tests based on xml suite via TestNG class in FireFox browser
+- $ java -cp "selenium-docker.jar;selenium-docker-tests.jar;libs/*" -DHUB_HOST="192.168.100.5" org.testng.TestNG ../search-module.xml - run tests based on xml suite via TestNG class
 
 # CREATE DOCKER IMAGE FOR TESTS
 Let's create 'Dockerfile':
