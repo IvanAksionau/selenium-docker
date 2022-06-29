@@ -27,7 +27,7 @@ The list of some basic Linux commands using in this course.
 - $ docker run -d --name=nginx --network=test-network nginx
 - $ docker run -it --network=test-network alpine
 
-# create_our own_image from Dockerfile file:
+# # DOCKER_IMAGE_CREATION:
 You should create file with name "Dockerfile" and fill in the data below:
 
 FROM alpine
