@@ -26,39 +26,40 @@
 - $ docker run -p 8050:80 nginx  - run 'nginx' APP on http://192.168.100.6:8050
 
 # VOLUME_MAPPING
-$ docker run -v /path/to/host/dir:/path/to/container/dir image
+- $ docker run -v /path/to/host/dir:/path/to/container/dir image
 
-------------------------DOCKER_NETWORK---------------------------------
-$ docker network create test-network
-$ docker run -d --name=nginx --network=test-network nginx
-$ docker run -it --network=test-network alpine
+# DOCKER_NETWORK
+- $ docker network create test-network
+- $ docker run -d --name=nginx --network=test-network nginx
+- $ docker run -it --network=test-network alpine
 
-----------create_our own_image from Dockerfile file---------------------------
-- You should create file with name "Dockerfile" and fill in the data below:
+# create_our own_image from Dockerfile file:
+You should create file with name "Dockerfile" and fill in the data below:
 
 FROM alpine
 ENTRYPOINT data
 
-- Then, let's build created image from directory, where "Dockerfile" was created and run it:
-  $ docker build -t=aksionauivan/datatest .   - build image with name dockerHub_account_name
-  $ docker run
-  ----------------------------CREATE folder 'jars' , then  Test.java file inside and fill in with----------------------------------------
-  $ mkdir jars
-  $ cd jars
-  $ vi Test.java
+# Then, let's build created image from directory, where "Dockerfile" was created and run it:
+- $ docker build -t=aksionauivan/datatest .   - build image with name dockerHub_account_name
+- $ docker run
+# CREATE folder 'jars' and Test.java file inside and fill in with:
+- $ mkdir jars
+- $ cd jars
+- $ vi Test.java
   public class Test {
   public static void main(String[] args) {
   System.out.println("Hello world");
   }
   }
-  ----------------------------CREATE IMAGE AND INSTALL JAVA----------------------------------------
-  $ docker run -it alpine    - create new container in interactive mode
-  $ apk add openjdk8         -  install java inside container (if we need - apk add curl)
-  $ find / -name javac       - check javac location
-  $ export PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin    - set java env variable to be abble to use 'javac'
 
-- Let's edit "Dockerfile" and update with the data below:
-  $ vi Dockerfile
+# CREATE IMAGE AND INSTALL JAVA
+- $ docker run -it alpine    - create new container in interactive mode
+- $ apk add openjdk8         - install java inside container (if we need - apk add curl)
+- $ find / -name javac       - check javac location
+- $ export PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin    - set java env variable to be abble to use 'javac'
+
+Let's edit "Dockerfile" and update with the data below:
+- $ vi Dockerfile
 
 FROM alpine
 RUN apk add openjdk8
@@ -67,12 +68,12 @@ WORKDIR /home/admin/selenium
 ADD /jars/Test.java Test.java
 ENTRYPOINT javac Test.java && java Test
 
-- Now let's build image from docker file, then run it:
-  $ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
-  $ docker run aksionauivan/helloword            - run container based om image
-  $ docker run -it --entrypoint=/bin/sh aksionauivan/helloword  run container in interactive mode to debug container with shell
+Now let's build image from docker file, then run it:
+- $ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
+- $ docker run aksionauivan/helloword            - run container based om image
+- $ docker run -it --entrypoint=/bin/sh aksionauivan/helloword  run container in interactive mode to debug container with shell
 
-----------------------------PASSING ARGUMENTS TO A JAVA PROGRAMM RUNNING INSIDE IMAGE----------------------------------------
+# PASSING ARGUMENTS TO A JAVA PROGRAM RUNNING INSIDE IMAGE
 - Let's edit Test.java file:
   $ vi Test.java
   public class Test {
@@ -82,8 +83,8 @@ ENTRYPOINT javac Test.java && java Test
   }
   }
 
-- Let's modify 'Dockerfile':
-  $ vi Dockerfile
+Let's modify 'Dockerfile':
+- $ vi Dockerfile
 
 FROM alpine
 RUN apk add openjdk8
