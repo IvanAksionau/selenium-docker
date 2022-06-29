@@ -29,10 +29,10 @@ The list of some basic Linux commands using in this course.
 
 # # DOCKER_IMAGE_CREATION:
 You should create file with name "Dockerfile" and fill in the data below:
-
+````
 FROM alpine
 ENTRYPOINT data
-
+````
 Then, let's build created image from directory, where "Dockerfile" was created and run it:
 - $ docker build -t=aksionauivan/datatest .   - build image with name dockerHub_account_name
 - $ docker run
