@@ -12,7 +12,7 @@ The list of some basic Linux commands using in this course.
 - Get list of IP addresses -  ifconfig -all   -(run from C:\Users\user.name)
 
 # install docker:
-- https://docs.docker.com/desktop/windows/install/  Use WSL 2 instead of Hyper-V option is not selected for this cource
+- https://docs.docker.com/desktop/windows/install/  Use WSL 2 instead of Hyper-V option is not selected for this course
 
 # PORT_MAPPING
 - $ docker run -d -p hostPort:containerPort image  - example of command
@@ -51,7 +51,7 @@ Then, let's build created image from directory, where "Dockerfile" was created a
 - $ docker run -it alpine    - create new container in interactive mode
 - $ apk add openjdk8         - install java inside container (if we need - apk add curl)
 - $ find / -name javac       - check javac location
-- $ export PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin    - set java env variable to be abble to use 'javac'
+- $ export PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin    - set java env variable to be able to use 'javac'
 
 Let's edit "Dockerfile" and update with the data below:
 - $ vi Dockerfile
@@ -65,7 +65,7 @@ ENTRYPOINT javac Test.java && java Test
 ````
 Now let's build image from docker file, then run it:
 - $ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
-- $ docker run aksionauivan/helloword            - run container based om image
+- $ docker run aksionauivan/helloword            - run container based on image
 - $ docker run -it --entrypoint=/bin/sh aksionauivan/helloword  run container in interactive mode to debug container with shell
 
 # PASSING ARGUMENTS TO A JAVA PROGRAM RUNNING INSIDE IMAGE
@@ -162,7 +162,7 @@ environment:
 - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
 ````
 
-- $ docker-compose up -d --scale chrome=4  encrease the number of containers for parallel tests execution
+- $ docker-compose up -d --scale chrome=4  increase the number of containers for parallel tests execution
 
 # RUNNING TESTS VIA JAR
 - $ mvn clean package -DskipTests
@@ -203,7 +203,7 @@ org.testng.TestNG $MODULE
 
 - $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
 - $ docker push aksionauivan/selenium-docker   - push create image to docker hub
-- $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker   - run container in interactive mode(entrypoint is overrided) to debug container with shell
+- $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker   - run container in interactive mode(entrypoint is overridden) to debug container with shell
 - $ docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker
 
 # CREATE DOCKER IMAGE FOR TESTS
