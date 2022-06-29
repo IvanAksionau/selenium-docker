@@ -1,10 +1,4 @@
- # Appium basics for Android AP
- 
-# commands list(in case investigation):
-- appium - it will start appium server
-- appium --allow-insecure chromedriver_autodownload - it will start appium server and download appropriate version of chrome driver
-- npm install appium --chromedriver_version="91" - so you can install specific chrome driver version(or download it directly to expected folder )
-- UIAutomatorViewer - will start tool to search APP elements location during codding
+ # Selenium based test framework based on docker containers
 
 # This is the list of some basic Linux commands using in this course.
 - Print the current working directory - pwd
@@ -39,7 +33,7 @@ You should create file with name "Dockerfile" and fill in the data below:
 FROM alpine
 ENTRYPOINT data
 
-# Then, let's build created image from directory, where "Dockerfile" was created and run it:
+Then, let's build created image from directory, where "Dockerfile" was created and run it:
 - $ docker build -t=aksionauivan/datatest .   - build image with name dockerHub_account_name
 - $ docker run
 # CREATE folder 'jars' and Test.java file inside and fill in with:
