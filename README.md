@@ -40,12 +40,13 @@ Then, let's build created image from directory, where "Dockerfile" was created a
 - $ mkdir jars
 - $ cd jars
 - $ vi Test.java
+````
   public class Test {
   public static void main(String[] args) {
   System.out.println("Hello world");
   }
   }
-
+````
 # CREATE IMAGE AND INSTALL JAVA
 - $ docker run -it alpine    - create new container in interactive mode
 - $ apk add openjdk8         - install java inside container (if we need - apk add curl)
@@ -54,50 +55,52 @@ Then, let's build created image from directory, where "Dockerfile" was created a
 
 Let's edit "Dockerfile" and update with the data below:
 - $ vi Dockerfile
-
+````
 FROM alpine
 RUN apk add openjdk8
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/bin
 WORKDIR /home/admin/selenium
 ADD /jars/Test.java Test.java
 ENTRYPOINT javac Test.java && java Test
-
+````
 Now let's build image from docker file, then run it:
 - $ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
 - $ docker run aksionauivan/helloword            - run container based om image
 - $ docker run -it --entrypoint=/bin/sh aksionauivan/helloword  run container in interactive mode to debug container with shell
 
 # PASSING ARGUMENTS TO A JAVA PROGRAM RUNNING INSIDE IMAGE
-- Let's edit Test.java file:
-  $ vi Test.java
+Let's edit Test.java file:
+- $ vi Test.java
+````
   public class Test {
   public static void main(String[] args) {
   System.out.println("Hello world \n We have got a number from you. The number is: "
   + Integer.parseInt(args[0]));
   }
   }
-
+````
 Let's modify 'Dockerfile':
 - $ vi Dockerfile
-
+````
 FROM alpine
 RUN apk add openjdk8
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/bin
 WORKDIR /home/admin/selenium
 ADD /jars/Test.java Test.java
 ENTRYPOINT javac Test.java && java Test $NUMBER           - added argument, which will be passed to 'Test.java'
+````
+- $ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
+- $ docker run -e NUMBER=5 aksionauivan/helloword            - run container based on image
 
-$ docker build -t=aksionauivan/helloword .    -build image based on 'Dockerfile' data
-$ docker run -e NUMBER=5 aksionauivan/helloword            - run container based on image
+# PUSH IMAGE TO A DOCKER HUB
+- $ docker login   - login into account aksionauivan
+- $ docker push aksionauivan/helloword   - push an image to dockerhub
+- $ docker tag aksionauivan/helloword:latest aksionauivan/helloword:release-1.0    - tag image locally
+- $ docker push aksionauivan/helloword:release-1.0   - push a tagged image to dockerhub
 
-----------------------------PUSH IMAGE TO A DOCKER HUB----------------------------------------------------------------
-$ docker login   - login into account aksionauivan
-$ docker push aksionauivan/helloword   - push an image to dockerhub
-$ docker tag aksionauivan/helloword:latest aksionauivan/helloword:release-1.0    - tag image locally
-$ docker push aksionauivan/helloword:release-1.0   - push a tagged image to dockerhub
-
-----------------------------DOCKER COMPOSE----------------------------------------------------------------
-$ vi docker-compose.yaml - to start file creation, then fill in the data below:
+# DOCKER COMPOSE
+- $ vi docker-compose.yaml - to start file creation, then fill in the data below:
+````
 version: '3'
 services:
 helloword:
@@ -124,16 +127,15 @@ networks:
 - net
 networks:
 net:
+````
 
-
-
-----------------------------SELENIUM GRID----------------------------------------------------------------
-$ docker pull selenium/hub:3.14
-$ docker pull selenium/node-firefox:3.14
-$ docker pull selenium/node-chrome:3.14
-$ mkdir selenium - create directory for 'volumes'
-$ vi docker-compose.yaml - to start file creation, then fill in the data below:
-
+# SELENIUM GRID
+- $ docker pull selenium/hub:3.14
+- $ docker pull selenium/node-firefox:3.14
+- $ docker pull selenium/node-chrome:3.14
+- $ mkdir selenium - create directory for 'volumes'
+- $ vi docker-compose.yaml - to start file creation, then fill in the data below:
+````
 version: "3"
 services:
 hub:
@@ -158,20 +160,19 @@ environment:
 - SE_EVENT_BUS_HOST=hub
 - SE_EVENT_BUS_PUBLISH_PORT=4442
 - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+````
 
+- $ docker-compose up -d --scale chrome=4  encrease the number of containers for parallel tests execution
 
-$ docker-compose up -d --scale chrome=4  encrease the number of containers for paralell tests execution
+# RUNNING TESTS VIA JAR
+- $ mvn clean package -DskipTests
+- $ cd target
+- $ java -cp "selenium-docker.jar;selenium-docker-tests.jar;libs/*" -DHUB_HOST="192.168.100.5" org.testng.TestNG ../search-module.xml - run tests based on xml suite via TestNG class in FireFox browser
 
-----------------------------RUNNING TESTS VIA JAR----------------------------------------------------------------
-$ mvn clean package -DskipTests
-$ cd target
-$ java -cp "selenium-docker.jar;selenium-docker-tests.jar;libs/*" -DHUB_HOST="192.168.100.5" org.testng.TestNG ../search-module.xml - run tests based on xml suite via TestNG class in FireFox browser
-
-----------------------------CREATE DOCKER IMAGE FOR TESTS----------------------------------------------------------------
-- Let's create 'Dockerfile':
-  $ vi Dockerfile
-------------------------------------------------------------------------------------------------------
-
+# CREATE DOCKER IMAGE FOR TESTS
+Let's create 'Dockerfile':
+- $ vi Dockerfile
+````
 # Workspace
 WORKDIR /test/folder
 
@@ -198,17 +199,17 @@ ENTRYPOINT java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
 -DHUB_HOST=$HUB_HOST \
 -DBROWSER=$BROWSER \
 org.testng.TestNG $MODULE
+````
 
-	
-------------------------------------------------------------------------------------------------------------------------------------------------
-$ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
-$ docker push aksionauivan/selenium-docker   - push create image to docker hub
-$ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker   - run container in interactive mode(entrypoint is overrided) to debug container with shell
-$ docker run -e HUB_HOST=192.168.100.6 -e MODULE=search-module.xml aksionauivan/selenium-docker
+- $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
+- $ docker push aksionauivan/selenium-docker   - push create image to docker hub
+- $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker   - run container in interactive mode(entrypoint is overrided) to debug container with shell
+- $ docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker
 
-$ docker image rm aksionauivan/selenium-docker
-$ docker system prune -a - will remove all stopped containers
-$ docker rmi -f $(docker images -aq) - To delete all the images
+# CREATE DOCKER IMAGE FOR TESTS
+- $ docker image rm aksionauivan/selenium-docker
+- $ docker system prune -a - will remove all stopped containers
+- $ docker rmi -f $(docker images -aq) - To delete all the images
 
 
 Location of the host file
