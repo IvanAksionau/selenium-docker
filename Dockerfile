@@ -1,12 +1,11 @@
 FROM openjdk:8u191-jre-alpine3.8
-
-#RUN apk add curl jq
+# install curl into container
+RUN apk add curl jq
 
 # Workspace
 WORKDIR /test
 
-# ADD .jar under target from host
-# into this image
+# ADD .jar under target from host into this image
 ADD target/selenium-docker.jar 			selenium-docker.jar
 ADD target/selenium-docker-tests.jar 	selenium-docker-tests.jar
 ADD target/libs							libs
@@ -18,14 +17,14 @@ ADD target/libs							libs
 ADD search-module.xml					search-module.xml
 
 # ADD health check script
-#ADD healthcheck.sh                      healthcheck.sh
+# due to some windows specifc characters it might not work properly so let's
+# convert the file from windows to unix format
+ADD healthcheck.sh                      healthcheck.sh
+RUN dos2unix healthcheck.sh
 
 # BROWSER
 # HUB_HOST
 # MODULE
+ENV BROWSER ${BROWSER}
 
-#ENTRYPOINT sh healthcheck.sh
-ENTRYPOINT java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
-    -DHUB_HOST=$HUB_HOST \
-    -DBROWSER=$BROWSER \
-    org.testng.TestNG $MODULE
+ENTRYPOINT sh healthcheck.sh
