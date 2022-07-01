@@ -103,30 +103,30 @@ ENTRYPOINT javac Test.java && java Test $NUMBER           - added argument, whic
 ````
 version: '3'
 services:
-helloword:
-container_name: aksionauivan/helloword
-image: aksionauivan/helloword
-ports:
-- "8080:8080"                                   -  "hostPort:containerPort"
-environment:
-- NUMBER=5
-working_dir: a/b/c                                  - create directory inside container
-entrypoint: "javac Test.java && java Test $NUMBER"       - will be executed inside 'a/b/c'
-volumes:
-- "$PWD/selenium:a/b/c"     "container_hostPath:working_directory path" - so we will copy an output of programm to 'docker-compose.yaml' location
+  helloword:
+    container_name: aksionauivan/helloword
+    image: aksionauivan/helloword
+    ports:
+      - "8080:8080"                                   -  "hostPort:containerPort"
+	environment:
+	  - NUMBER=5
+	working_dir: a/b/c                                  - create directory inside container
+	entrypoint: "javac Test.java && java Test $NUMBER"       - will be executed inside 'a/b/c'
+    volumes:
+      - "$PWD/selenium:a/b/c"     "container_hostPath:working_directory path" - so we will copy an output of programm to 'docker-compose.yaml' location
+    networks:
+      - net                                            -  usefull to comunicate with external container
+    nginx:
+    container_name: nginx
+    image: anginx
+    ports:
+      - "8090:8080"
+    depends_on:
+	  - helloword               will check if 'helloword' container created, then create 'nginx' container
+    networks:
+      - net
 networks:
-- net                                            -  usefull to comunicate with external container
-nginx:
-container_name: nginx
-image: anginx
-ports:
-- "8090:8080"
-depends_on:
-- helloword               will check if 'helloword' container created, then create 'nginx' container
-networks:
-- net
-networks:
-net:
+  net:
 ````
 
 # SELENIUM GRID
@@ -138,28 +138,28 @@ net:
 ````
 version: "3"
 services:
-hub:
-image: selenium/hub:4.1.0
-ports:
-- "4444:4444"
-chrome:
-image: selenium/node-chrome:4.1.0
-shm_size: '2g'
-depends_on:
-- hub
-environment:
-- SE_EVENT_BUS_HOST=hub
-- SE_EVENT_BUS_PUBLISH_PORT=4442
-- SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-firefox:
-image: selenium/node-firefox:4.1.0
-shm_size: '2g'
-depends_on:
-- hub
-environment:
-- SE_EVENT_BUS_HOST=hub
-- SE_EVENT_BUS_PUBLISH_PORT=4442
-- SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  hub:
+    image: selenium/hub:4.1.0
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome:4.1.0
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  firefox:
+    image: selenium/node-firefox:4.1.0
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
 ````
 
 - $ docker-compose up -d --scale chrome=4  increase the number of containers for parallel tests execution
@@ -201,19 +201,90 @@ ENTRYPOINT java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
 org.testng.TestNG $MODULE
 ````
 
-- $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
-- $ docker push aksionauivan/selenium-docker   - push create image to docker hub
-- $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker   - run container in interactive mode(entrypoint is overridden) to debug container with shell
-- $ docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker
-
 # CREATE DOCKER IMAGE FOR TESTS
+- $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
+- $ docker push aksionauivan/selenium-docker  - push image to docker hub
+- $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker  - run container in interactive mode(entrypoint is overridden) to debug container with shell
+- $ docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker- run container(tests are executed inside)
+
+# How to clean docker data
 - $ docker image rm aksionauivan/selenium-docker
 - $ docker system prune -a - will remove all stopped containers
 - $ docker rmi -f $(docker images -aq) - To delete all the images
 
+# Move tests results outside container with volume mapping
+- $ docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml -v /C/Users/ivan.aksionau/IdeaProjects/selenium-docker/output:/test/test-output aksionauivan/selenium-docker
 
-Location of the host file
-Windows
+# CREATE DOCKER-COMPOSE FILE
+- $ vi docker-compose.yaml - to start file creation, then fill in the data below:
+````
+version: "3"
+services:
+  hub:
+    image: selenium/hub:4.1.0
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome:4.1.0
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  firefox:
+    image: selenium/node-firefox:4.1.0
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  test-module:
+    image: aksionauivan/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - HUB_HOST=hub
+      - MODULE=search-module.xml
+    volumes:
+      - ./search-result:/test/test-output
+
+````
+
+# Let's add script to wait till 'hub' is started before execution of tests container:
+````
+#!/usr/bin/env bash
+# Environment Variables
+# HUB_HOST
+# BROWSER
+# MODULE
+
+echo "Checking if hub is ready - $HUB_HOST"
+# curl SeleniumGrid hub status and parse response with 'jq', which will convert string response into JSon format
+while [ "$(curl -s http://$HUB_HOST:4444/wd/hub/status | jq -r .value.ready)" != "true" ]; do
+  sleep 1
+done
+
+# start the java command
+java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
+  -DHUB_HOST=$HUB_HOST \
+  -DBROWSER=$BROWSER \
+  org.testng.TestNG $MODULE
+````
+- docker compose file and docker file are also modified.(see in code)
+
+- $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
+- $ docker push aksionauivan/selenium-docker  - push image to docker hub
+- $ docker-compose up -d --scale chrome=4  increase the number of containers for parallel tests execution
+
+- $ docker-compose up | grep -e 'test-module'   - run container and log only test-module container
+
+# How to find the host file locally
+Windows:
 C:\Windows\System32\Drivers\etc\
-Linux
+Linux:
 /etc/hosts
