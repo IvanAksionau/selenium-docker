@@ -19,15 +19,18 @@ public class BaseTest {
         // BROWSER => chrome / firefox
         // HUB_HOST => localhost / 10.0.1.3 / hostname
 
-        String host = "http://192.168.100.5";
+        String host = "localhost";
+//        String host = "http://192.168.100.5";
         DesiredCapabilities dc;
 
-        if (System.getProperty("BROWSER") != null &&
-                System.getProperty("BROWSER").equalsIgnoreCase("firefox")) {
+        String browser = System.getProperty("BROWSER");
+        if (browser != null &&
+                browser.equalsIgnoreCase("firefox")) {
             dc = DesiredCapabilities.firefox();
         } else {
             dc = DesiredCapabilities.chrome();
         }
+        System.out.println(browser + " was set as browser");
 
         if (System.getProperty("HUB_HOST") != null) {
             host = System.getProperty("HUB_HOST");
@@ -36,8 +39,7 @@ public class BaseTest {
 
         String testName = ctx.getCurrentXmlTest().getName();
 
-//        String completeUrl = "http://192.168.100.5"  + ":4444/wd/hub";
-        String completeUrl ="http://" + host  + ":4444/wd/hub";
+        String completeUrl = "http://" + host + ":4444/wd/hub";
         dc.setCapability("name", testName);
         this.driver = new RemoteWebDriver(new URL(completeUrl), dc);
     }
