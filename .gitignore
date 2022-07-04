@@ -15,3 +15,5 @@
 *.zip
 *.tar.gz
 *.bat
+/search-result-chrome/
+/search-result-firefox/
