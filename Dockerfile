@@ -25,6 +25,6 @@ RUN dos2unix healthcheck.sh
 # BROWSER
 # HUB_HOST
 # MODULE
-ENV BROWSER ${BROWSER}
+#ENV BROWSER ${BROWSER}
 
 ENTRYPOINT sh healthcheck.sh

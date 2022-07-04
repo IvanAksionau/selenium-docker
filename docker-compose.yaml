@@ -33,7 +33,7 @@ services:
       - MODULE=search-module.xml
       - BROWSER=firefox
     volumes:
-      - ./search-result:/test/test-firefox-output
+      - ./search-result-firefox:/test/test-output
   test-chrome-module:
     image: aksionauivan/selenium-docker
     depends_on:
@@ -43,4 +43,4 @@ services:
       - MODULE=search-module.xml
       - BROWSER=chrome
     volumes:
-      - ./search-result:/test/test-chrome-output
+      - ./search-result-chrome:/test/test-output
