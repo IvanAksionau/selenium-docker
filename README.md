@@ -201,7 +201,7 @@ ENTRYPOINT java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
 org.testng.TestNG $MODULE
 ````
 
-# CREATE DOCKER IMAGE FOR TESTS
+Let's build, save and run our test image:
 - $ docker build -t=aksionauivan/selenium-docker .   - build image with name dockerHub_account_name
 - $ docker push aksionauivan/selenium-docker  - push image to docker hub
 - $ docker run -it --entrypoint=/bin/sh aksionauivan/selenium-docker  - run container in interactive mode(entrypoint is overridden) to debug container with shell
