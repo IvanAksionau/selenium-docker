@@ -9,7 +9,7 @@ pipeline {
 //                 }
 //             }
             steps {
-                bat 'mvn clean package -DskipTests'
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Build Image') {
@@ -33,8 +33,8 @@ pipeline {
         stage('Push Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'pass', usernameVariable: 'user')])
-                bat "sudo docker login --username=${user} --password=${pass}"
-                bat "sudo docker push aksionauivan/selenium-docker:latest"
+                sh "sudo docker login --username=${user} --password=${pass}"
+                sh "sudo docker push aksionauivan/selenium-docker:latest"
             }
         }
     }
