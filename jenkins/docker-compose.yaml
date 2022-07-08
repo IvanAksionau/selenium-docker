@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  jenkins:
+    image: aksionauivan/jenkins_with_docker
+    build:
+      context: ./
+    restart: unless-stopped
+    #    memory usage by setting a maximum heap size using the JAVA_OPTS
+    environment:
+      - "JAVA_OPTS=-Xmx3g -Xms2G"
+    volumes:
+      #      it will communicate with service on the host instead that on the container,
+      #      then we’ll get the possibility to run docker on the host from container.
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOST_JENKINS_DATA}:/var/jenkins_home
+    ports:
+      - "8080:8080"
+      - "50000:50000"
