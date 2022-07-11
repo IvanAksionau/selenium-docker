@@ -18,14 +18,15 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'sudo docker-compose up --no-color test-chrome-module test-firefox-module'
+//                sh 'sudo docker-compose up --no-color test-chrome-module test-firefox-module'
+                sh 'sudo docker-compose up --no-color test-chrome-module'
             }
         }
-        stage('Stop Tests infra') {
-            steps {
-                sh 'sudo docker-compose down'
-            }
-        }
+//        stage('Stop Tests infra') {
+//            steps {
+//                sh 'sudo docker-compose down'
+//            }
+//        }
     }
     post {
         success {
