@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Start Tests infra') {
             steps {
-                sh 'sudo docker-compose up -d hub chrome firefox'
+                sh 'sudo docker-compose up --no-color -d hub chrome firefox'
             }
         }
         stage('Run Tests') {
@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Stop Tests infra') {
             steps {
-                sh 'sudo docker-compose down'
+                sh 'sudo docker-compose down --no-color'
             }
         }
     }
