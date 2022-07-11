@@ -43,4 +43,4 @@ services:
       - MODULE=search-module.xml
       - BROWSER=chrome
     volumes:
-      - ./search-result-chrome:/test/test-output
+      - ./search-result-chrome:/var/jenkins_home
