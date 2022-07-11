@@ -19,7 +19,8 @@ pipeline {
         stage('Run Tests') {
             steps {
 //                sh 'sudo docker-compose up --no-color test-chrome-module test-firefox-module'
-                sh 'sudo docker-compose up --no-color test-chrome-module'
+//                sh 'sudo docker-compose up --no-color test-chrome-module'
+                sh 'mvn test'
                 archiveArtifacts artifacts: '**'
             }
         }
