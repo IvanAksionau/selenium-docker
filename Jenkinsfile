@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Run tests') {
             steps {
-                sh 'sudo docker run aksionauivan/selenium-docker'
+                sh 'sudo docker-compose up'
             }
         }
     }
