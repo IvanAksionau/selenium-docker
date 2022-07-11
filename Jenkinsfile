@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh 'sudo docker build -t=aksionauivan/jenkins_with_docker .'
+                sh 'sudo docker build -t=aksionauivan/selenium-docker .'
             }
         }
         stage('Push Image') {
