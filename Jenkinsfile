@@ -17,22 +17,12 @@ pipeline {
                 sh 'sudo docker build -t=aksionauivan/jenkins_with_docker .'
             }
         }
-//         stage('Push Image') {
-//             steps {
-//                 script {
-// //                 'dockerHub' is credentials for https://hub.docker.com/, created in Jenkins manually (manage global credentials)
-// 			        sudo.docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
-// // 			        	app.push("${BUILD_NUMBER}") can be tagged based on Jenkins build number
-// 			            app.push("latest")
-// 			        }
-//                 }
-//             }
-//         }
         stage('Push Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'pass', usernameVariable: 'user')])
-                sh "sudo docker login --username=${user} --password=${pass}"
-                sh "sudo docker push aksionauivan/selenium-docker:latest"
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
+                    sh "sudo docker login --username=${user} --password=${pass}"
+                    sh "sudo docker push aksionauivan/selenium-docker:latest"
+                }
             }
         }
     }
