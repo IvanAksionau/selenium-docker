@@ -11,9 +11,19 @@ pipeline {
                 sh 'sudo docker build -t=aksionauivan/selenium-docker .'
             }
         }
-        stage('Run tests') {
+        stage('Start Tests infra') {
             steps {
-                sh 'sudo docker-compose up'
+                sh 'sudo docker-compose up -d hub chrome firefox'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh 'sudo docker-compose up --no-color test-chrome-module test-firefox-module'
+            }
+        }
+        stage('Stop Tests infra') {
+            steps {
+                sh 'sudo docker-compose down'
             }
         }
     }
