@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Stop Tests infra') {
             steps {
-                sh 'sudo docker-compose down --no-color'
+                sh 'sudo docker-compose down'
             }
         }
     }
