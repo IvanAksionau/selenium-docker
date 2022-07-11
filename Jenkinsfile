@@ -20,17 +20,17 @@ pipeline {
             steps {
 //                sh 'sudo docker-compose up --no-color test-chrome-module test-firefox-module'
                 sh 'sudo docker-compose up --no-color test-chrome-module'
+                archiveArtifacts artifacts: '**'
             }
         }
-//        stage('Stop Tests infra') {
-//            steps {
-//                sh 'sudo docker-compose down'
-//            }
-//        }
+        stage('Stop Tests infra') {
+            steps {
+                sh 'sudo docker-compose down'
+            }
+        }
     }
     post {
         success {
-            archiveArtifacts artifacts: '**'
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
                 sh "sudo docker login --username=${user} --password=${pass}"
                 sh "sudo docker push aksionauivan/selenium-docker"
