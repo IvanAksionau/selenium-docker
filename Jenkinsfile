@@ -8,12 +8,12 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh 'docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker'
+                sh 'sudo docker build -t=aksionauivan/selenium-docker .'
             }
         }
         stage('Run tests') {
             steps {
-                sh 'docker run aksionauivan/selenium-docker'
+                sh 'sudo docker run aksionauivan/selenium-docker'
             }
         }
     }
