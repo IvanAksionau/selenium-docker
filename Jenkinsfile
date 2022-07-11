@@ -32,7 +32,7 @@ pipeline {
     post {
         success {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
-                sh "sudo docker login --username=${user} --password-stdin=${pass}"
+                sh "sudo docker login --username=${user} --password=${pass}"
                 sh "sudo docker push aksionauivan/selenium-docker"
             }
         }
