@@ -8,15 +8,20 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh 'sudo docker build -t=aksionauivan/selenium-docker .'
+                sh 'docker run -e HUB_HOST=192.168.100.5 -e MODULE=search-module.xml aksionauivan/selenium-docker'
             }
         }
-        stage('Push Image') {
+        stage('Run tests') {
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
-                    sh "sudo docker login --username=${user} --password=${pass}"
-                    sh "sudo docker push aksionauivan/selenium-docker"
-                }
+                sh 'docker run aksionauivan/selenium-docker'
+            }
+        }
+    }
+    post {
+        success {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
+                sh "sudo docker login --username=${user} --password=${pass}"
+                sh "sudo docker push aksionauivan/selenium-docker"
             }
         }
     }
