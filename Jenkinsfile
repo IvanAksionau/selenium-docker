@@ -14,9 +14,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                script {
-                    app = sudo.docker.build("aksionauivan/selenium-docker")
-                }
+                sh 'sudo docker build -t=aksionauivan/jenkins_with_docker .'
             }
         }
 //         stage('Push Image') {
