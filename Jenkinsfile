@@ -29,6 +29,7 @@ pipeline {
     }
     post {
         success {
+            archiveArtifacts artifacts: 'output/**'
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'user', passwordVariable: 'pass']]) {
                 sh "sudo docker login --username=${user} --password=${pass}"
                 sh "sudo docker push aksionauivan/selenium-docker"
