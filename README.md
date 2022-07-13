@@ -252,6 +252,7 @@ Let's build, save and run our test image:
 - $ docker container prune - remove all stopped containers
 - $ docker image rm image_id - delete specific image
 - $ docker rmi -f $(docker images -aq) - delete all the images
+- $ docker kill $(docker ps -q) - stop all Docker containers
 
 # Move tests results outside container with volume mapping
 
