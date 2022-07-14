@@ -9,7 +9,6 @@ pipelineJob('pipeline-selenium-tests') {  //https://github.com/jenkinsci/job-dsl
                     branch('*/master')
                 }
             }
-//            scriptPath('jenkins/SeleniumTestPipeline.groovy')
             scriptPath('Jenkinsfile')
         }
     }
