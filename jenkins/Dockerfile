@@ -1,4 +1,5 @@
 FROM jenkins/jenkins:lts
+
 USER root
 # install maven inside container
 ARG MAVEN_VERSION=3.6.3
@@ -11,8 +12,6 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 # install docker inside container
-
-
 RUN mkdir -p /tmp/download && \
  curl -L https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar -xz -C /tmp/download && \
  rm -rf /tmp/download/docker/dockerd && \
@@ -21,9 +20,9 @@ RUN mkdir -p /tmp/download && \
  groupadd -g 999 docker && \
  usermod -aG staff,docker jenkins
 
-USER jenkins
+RUN curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose \
 
-#ERROR:
-#Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.37/containers/json: dial unix /var/ru
-#n/docker.sock: connect: permission denied
-
+## install 'sudo' to acces docker like 'sudo docker ps'
+#RUN apt-get update && apt-get install -y sudo
