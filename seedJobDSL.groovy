@@ -5,8 +5,8 @@ pipelineJob('pipeline-selenium-tests') {
                 git {
                     remote {
                         github('IvanAksionau/selenium-docker')
-                        branch('master')
                     }
+                    branch('*/master')
                 }
             }
 //            scriptPath('jenkins/SeleniumTestPipeline.groovy')
