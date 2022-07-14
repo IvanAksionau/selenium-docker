@@ -7,6 +7,9 @@ pipelineJob('pipeline-selenium-tests') {  //https://github.com/jenkinsci/job-dsl
                         github('IvanAksionau/selenium-docker')
                     }
                     branch('*/master')
+                    extensions {
+                        cleanBeforeCheckout()
+                    }
                 }
             }
             scriptPath('Jenkinsfile')
