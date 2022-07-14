@@ -1,15 +1,16 @@
-pipelineJob('pipeline-sele111nium-tests') {  //https://github.com/jenkinsci/job-dsl-plugin
+pipelineJob('pipeline-selenium-tests') {  //https://github.com/jenkinsci/job-dsl-plugin
     definition {
         cpsScm {
             scm {
                 git {
                     remote {
-                        url('https://github.com/IvanAksionau/selenium-docker.git')
+                        github('IvanAksionau/selenium-docker')
                     }
                     branch('*/master')
                 }
             }
-            lightweight()
+//            scriptPath('jenkins/SeleniumTestPipeline.groovy')
+            scriptPath('Jenkinsfile')
         }
     }
 }
