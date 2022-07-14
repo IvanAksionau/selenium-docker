@@ -1,4 +1,4 @@
-pipelineJob('pipeline-selenium-tests') {  //https://github.com/jenkinsci/job-dsl-plugin
+pipelineJob('pipeline-sele111nium-tests') {  //https://github.com/jenkinsci/job-dsl-plugin
     definition {
         cpsScm {
             scm {
