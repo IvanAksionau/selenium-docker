@@ -5,6 +5,7 @@ pipelineJob('pipeline-selenium-tests') {
                 git {
                     remote {
                         github('IvanAksionau/selenium-docker')
+                        branch('master')
                     }
                 }
             }
