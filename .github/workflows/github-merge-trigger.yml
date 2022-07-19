@@ -1,0 +1,27 @@
+name: trigger pipeline on
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, edited, reopened]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: trigger single Job
+        uses: appleboy/jenkins-action@master
+        with:
+          url: "http://192.168.100.5:8080"
+          user: "ivan"
+          token: ${{ secrets.TOKEN }}
+          job: "pipeline-selenium-tests"
+
+#      - name: trigger multiple Job
+#        uses: appleboy/jenkins-action@master
+#        with:
+#          url: "http://example.com"
+#          user: "example"
+#          token: ${{ secrets.TOKEN }}
+#          job: "job_1,job_2"
