@@ -20,7 +20,7 @@ jobs:
 
 #      - name: trigger multiple Job
 #        uses: appleboy/jenkins-action@master
-#        with:
+#        with:  some PR test
 #          url: "http://example.com"
 #          user: "example"
 #          token: ${{ secrets.TOKEN }}
