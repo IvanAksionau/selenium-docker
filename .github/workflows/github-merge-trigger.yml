@@ -1,4 +1,4 @@
-name: trigger pipeline on
+name: trigger pipeline on merged code changes
 on:
   pull_request:
     branches:
