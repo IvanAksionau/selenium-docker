@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.359
+FROM jenkins/jenkins:2.360
 
 USER root
 # install maven inside container
