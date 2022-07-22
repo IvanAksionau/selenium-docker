@@ -1,4 +1,4 @@
-# Selenium based test framework + execution in docker containers
+# 🚀 Selenium based test framework + execution in docker containers
 
 The list of some basic Linux commands using in this course:
 
@@ -351,3 +351,11 @@ Visit https://www.jenkins.io/doc/book/using/using-agents/ to get details.
 - $ docker run -d --rm --name=agentInDocker -p 22:22 -e "JENKINS_AGENT_SSH_PUBKEY=your-public-key" jenkins/ssh-agent:jdk11
 - $ docker exec -it container_name bash (name can be found with 'docker ps') - go inside specific container
 - $ docker exec container_name /bin/sh -c /usr/bin/env - get variables inside specific container
+
+# CONFIGURE GitHub Actions to trigger jenkins pipeline on created merge request
+- https://docs.github.com/en/actions
+- https://github.com/marketplace/actions/trigger-jenkins-job
+- https://github.com/appleboy/jenkins-action/issues/3
+- https://github.com/marketplace?query=jenkins&type=actions
+- You may need to get the crumb with the following URL on the browser: http://<jenkins_url>/crumbIssuer/api/json?tree=crumb
+  d5a69700382e97547ee38869e968486ffada32d315aa247d1c6a34c4edcc9f32
