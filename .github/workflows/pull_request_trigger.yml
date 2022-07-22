@@ -1,5 +1,7 @@
 name: trigger pipeline on merged code changes
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches:
       - master
