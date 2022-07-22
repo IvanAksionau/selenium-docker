@@ -358,4 +358,3 @@ Visit https://www.jenkins.io/doc/book/using/using-agents/ to get details.
 - https://github.com/appleboy/jenkins-action/issues/3
 - https://github.com/marketplace?query=jenkins&type=actions
 - You may need to get the crumb with the following URL on the browser: http://<jenkins_url>/crumbIssuer/api/json?tree=crumb
-  d5a69700382e97547ee38869e968486ffada32d315aa247d1c6a34c4edcc9f32
