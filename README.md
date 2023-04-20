@@ -193,7 +193,7 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
 ````
 
-- $ docker-compose up -d --scale chrome=4 increase the number of containers for parallel tests execution
+-  $ docker-compose up -d --scale chrome=4 increase the number of containers for parallel tests execution
 
 # RUNNING TESTS VIA JAR
 
@@ -343,7 +343,7 @@ all created docker files are in ./jenkins folder
 
 - $ docker build -t=aksionauivan/jenkins_with_docker . - build image with name dockerHub_account_name/image_name
 - $ docker-compose up - up image from ./jenkins folder
-- access jenkins on http://192.168.100.5:8080
+- access jenkins on http://192.168.100.5:8080 or http://localhost:8080/
 
 # CONFIGURE DOCKER AGENT(is optional, as we have all what we need inside jenkins container)
 
